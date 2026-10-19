@@ -10,6 +10,7 @@ import com.vavedin.euder.feature.user.domain.User;
 import com.vavedin.euder.feature.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
@@ -45,12 +46,28 @@ class UserServiceTest {
 
         UserDto result = userService.addUser(userDto);
 
-        verify(userRepository).addUser(any(User.class));
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).addUser(captor.capture());
+
+        User savedUser = captor.getValue();
+
+        assertThat(savedUser)
+                .usingRecursiveComparison()
+                .ignoringFields("id", "address")
+                .isEqualTo(userDto);
+
+        UserDto expected = new UserDto(
+                "Joffrey",
+                "Baratheon",
+                "theonetrueking@gmail.com",
+                address,
+                "0123456789",
+                savedUser.getId()
+        );
 
         assertThat(result)
                 .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(userDto);
+                .isEqualTo(expected);
     }
 
 }

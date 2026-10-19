@@ -39,7 +39,7 @@ class UserMapperTest {
                 "theonetrueking@gmail.com",
                 addressDto,
                 "0123456789",
-                userDto.getId());
+                user.getId());
         createUserDto = new CreateUserDto("Joffrey",
                 "Baratheon",
                 "theonetrueking@gmail.com",
@@ -50,19 +50,21 @@ class UserMapperTest {
     @Test
     void toDto_fromUserToUserDto_keepsAllValues() {
         UserDto result = userMapper.toDto(user);
-        assertThat(result).usingRecursiveComparison().isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(userDto);
     }
 
     @Test
     void toEntity_fromUserDtoToUser_keepsAllValues() {
         User result = userMapper.toEntity(userDto);
-        assertThat(result).usingRecursiveComparison().isEqualTo(userDto);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
     void toEntity_fromCreateUserDtoToUser_keepsAllValues() {
         User result = userMapper.toEntity(createUserDto);
-        assertThat(result).usingRecursiveComparison().isEqualTo(createUserDto);
+        assertThat(result).usingRecursiveComparison()
+                .ignoringFields("id").isEqualTo(user);
+        assertThat(result.getId()).isNotBlank();
     }
 
 }

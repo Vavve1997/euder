@@ -16,11 +16,28 @@ public class UserMapper {
 
 
     public UserDto toDto(User user) {
+        return new UserDto(user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                addressMapper.toDto(user.getAddress()),
+                user.getPhoneNumber(),
+                user.getId());
     }
 
     public User toEntity(UserDto userDto) {
+        return new User(userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getEmail(),
+                addressMapper.toEntity(userDto.getAddressDto()),
+                userDto.getPhoneNumber(),
+                userDto.getId());
     }
 
     public User toEntity(CreateUserDto createUserDto) {
+        return new User(createUserDto.getFirstName(),
+                createUserDto.getLastName(),
+                createUserDto.getEmail(),
+                addressMapper.toEntity(createUserDto.getAddress()),
+                createUserDto.getPhoneNumber());
     }
 }

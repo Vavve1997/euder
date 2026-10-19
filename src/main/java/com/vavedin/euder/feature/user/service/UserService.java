@@ -18,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDto addUser(CreateUserDto userDto) {
-        return null;
+    public UserDto addUser(CreateUserDto createUserDto) {
+        return userMapper.toDto(userRepository.addUser(userMapper.toEntity(createUserDto)));
     }
 }

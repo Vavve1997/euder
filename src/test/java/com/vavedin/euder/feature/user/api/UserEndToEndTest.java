@@ -1,5 +1,6 @@
 package com.vavedin.euder.feature.user.api;
 
+import com.vavedin.euder.feature.user.api.dto.AddressDto;
 import com.vavedin.euder.feature.user.api.dto.UserDto;
 import com.vavedin.euder.feature.user.domain.UserDatabase;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class UserEndToEndTest {
                         }
                         """)
                 .when()
-                .post("/books")
+                .post("/users")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
@@ -51,5 +52,35 @@ public class UserEndToEndTest {
         assertThat(userDto.getLastName()).isEqualTo("Baratheon");
         assertThat(userDto.getEmail())
                 .isEqualTo("stannisshouldbeking@example.com");
+        assertThat(userDto.getPhoneNumber()).isEqualTo("011111111");
+        assertThat(userDto.getAddressDto())
+                .usingRecursiveComparison()
+                .isEqualTo(new AddressDto(
+                        "RhollorStreet", 12, 3000, "DragonStone"
+                ));
+    }
+
+    @Test
+    void addUser_withoutAddress_returnsBadRequest() {
+        given()
+                .baseUri("http://localhost")
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("""
+                    {
+                      "firstName": "Stannis",
+                      "lastName": "Baratheon",
+                      "email": "stannis@example.com",
+                      "phoneNumber": "011111111"
+                    }
+                    """)
+                .when()
+                .post("/users")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message",
+                        org.hamcrest.Matchers.equalTo(
+                                "address must not be null"
+                        ));
     }
 }

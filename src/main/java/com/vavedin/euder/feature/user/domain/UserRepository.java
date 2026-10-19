@@ -12,5 +12,7 @@ public class UserRepository {
     }
 
     public User addUser(User user) {
+        userDatabase.getUserDatabase().put(user.getId(), user);
+        return user;
     }
 }
