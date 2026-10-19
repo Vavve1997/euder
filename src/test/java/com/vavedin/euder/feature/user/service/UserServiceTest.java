@@ -5,7 +5,6 @@ import com.vavedin.euder.feature.user.api.UserMapper;
 import com.vavedin.euder.feature.user.api.dto.AddressDto;
 import com.vavedin.euder.feature.user.api.dto.CreateUserDto;
 import com.vavedin.euder.feature.user.api.dto.UserDto;
-import com.vavedin.euder.feature.user.domain.Address;
 import com.vavedin.euder.feature.user.domain.User;
 import com.vavedin.euder.feature.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

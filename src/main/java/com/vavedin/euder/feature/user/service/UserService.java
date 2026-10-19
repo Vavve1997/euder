@@ -3,7 +3,6 @@ package com.vavedin.euder.feature.user.service;
 import com.vavedin.euder.feature.user.api.UserMapper;
 import com.vavedin.euder.feature.user.api.dto.CreateUserDto;
 import com.vavedin.euder.feature.user.api.dto.UserDto;
-import com.vavedin.euder.feature.user.domain.User;
 import com.vavedin.euder.feature.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
 

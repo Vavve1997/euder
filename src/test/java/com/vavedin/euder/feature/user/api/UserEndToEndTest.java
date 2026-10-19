@@ -2,9 +2,7 @@ package com.vavedin.euder.feature.user.api;
 
 import com.vavedin.euder.feature.user.api.dto.AddressDto;
 import com.vavedin.euder.feature.user.api.dto.UserDto;
-import com.vavedin.euder.feature.user.domain.UserDatabase;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,8 @@
 package com.vavedin.euder.feature.user.domain;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.vavedin.euder.feature.security.PasswordEncoder;
+import com.vavedin.euder.feature.security.enums.Feature;
+import com.vavedin.euder.feature.security.enums.Role;
 
 import java.util.UUID;
 
@@ -13,6 +14,8 @@ public class User {
     private final String email;
     private final Address address;
     private final String phoneNumber;
+    private final Role role;
+    private String hashedPassword;
 
     public User(String firstName, String lastName, String email, Address address, String phoneNumber) {
         this(firstName,
@@ -20,10 +23,21 @@ public class User {
                 email,
                 address,
                 phoneNumber,
-                UUID.randomUUID().toString());
+                UUID.randomUUID().toString(),
+                Role.MEMBER);
     }
 
     public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id) {
+        this(firstName,
+                lastName,
+                email,
+                address,
+                phoneNumber,
+                id,
+                Role.MEMBER);
+    }
+
+    public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id, Role role) {
         this.firstName = requireNonBlank(firstName,"firstName");
         this.lastName = requireNonBlank(lastName,"lastName");
         this.email = requireNonBlank(email, "email");
@@ -33,6 +47,18 @@ public class User {
         this.address = address;
         this.phoneNumber = requireNonBlank(phoneNumber, "phoneNumber");
         this.id = requireNonBlank(id, "id");
+        if (role == null) {
+            throw new IllegalArgumentException("role must not be null");
+        }
+        this.role = role;
+    }
+
+    public boolean canHaveAccessTo(Feature feature) {
+        return role.containsFeature(feature);
+    }
+
+    public boolean doesPasswordMatch(String rawPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, hashedPassword);
     }
 
     private static String requireNonBlank(String value, String fieldName) {
