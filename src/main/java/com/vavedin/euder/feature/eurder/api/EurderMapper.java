@@ -19,7 +19,4 @@ public class EurderMapper {
         return new EurderDto(eurder.getId(), eurder.getCustomerId(), itemGroupMapper.toDto(eurder.getItemGroups()), eurder.calculateTotalPrice());
     }
 
-    public Eurder toEntity(CreateEurderDto createEurderDto, User customer) {
-        return new Eurder(customer.getId(), itemGroupMapper.toEntity(createEurderDto.getItemGroupDtos()));
-    }
 }

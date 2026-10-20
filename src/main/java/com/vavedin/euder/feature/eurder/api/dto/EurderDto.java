@@ -8,14 +8,14 @@ public class EurderDto {
     private String id;
     private String customerId;
 
-    private List<ItemGroupDto> itemGroupDtos;
+    private List<ItemGroupDto> itemGroups;
     private BigDecimal totalPrice;
 
-    public EurderDto(String id, String customerId, List<ItemGroupDto> itemGroupDtos, BigDecimal totalPrice) {
+    public EurderDto(String id, String customerId, List<ItemGroupDto> itemGroups, BigDecimal totalPrice) {
         this.id = id;
         this.customerId = customerId;
 
-        this.itemGroupDtos = itemGroupDtos;
+        this.itemGroups = itemGroups;
         this.totalPrice = totalPrice;
     }
 
@@ -33,7 +33,7 @@ public class EurderDto {
 
 
     public List<ItemGroupDto> getItemGroups() {
-        return itemGroupDtos;
+        return itemGroups;
     }
 
     public BigDecimal getTotalPrice() {

@@ -20,7 +20,7 @@ public class UserDatabase {
         User admin = new User("Admin", "Admin", "admin",
                 new Address("Admin", 1, 1000, "Admin"),
                 "123", UUID.randomUUID().toString(), Role.ADMIN,
-                passwordEncoder.encode("admin"));
+                passwordEncoder.encode("root"));
         userDatabase.put(admin.getId(), admin);
     }
 

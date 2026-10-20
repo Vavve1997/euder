@@ -1,6 +1,7 @@
 package com.vavedin.euder.common.api;
 
 import com.vavedin.euder.common.exception.ForbiddenException;
+import com.vavedin.euder.common.exception.NotFoundException;
 import com.vavedin.euder.feature.security.exceptions.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleInvalidUserInput(
             IllegalArgumentException exception
     ) {
-        logger.error("Invalid user request: {}", exception.getMessage());
+        logger.warn("Invalid user request: {}", exception.getMessage());
 
         return Map.of("message", exception.getMessage());
     }
@@ -50,4 +51,11 @@ public class GlobalExceptionHandler {
         logger.warn("Forbidden: {}", e.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ProblemDetail handleNotFound(NotFoundException e) {
+        logger.warn("Not found: {}", e.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
 }

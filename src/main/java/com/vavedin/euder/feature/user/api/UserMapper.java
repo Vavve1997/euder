@@ -5,6 +5,9 @@ import com.vavedin.euder.feature.user.api.dto.UserDto;
 import com.vavedin.euder.feature.user.domain.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.List;
+
 @Component
 public class UserMapper {
 
@@ -22,6 +25,10 @@ public class UserMapper {
                 addressMapper.toDto(user.getAddress()),
                 user.getPhoneNumber(),
                 user.getId());
+    }
+
+    public List<UserDto> toDto(Collection<User> users) {
+        return users.stream().map(this::toDto).toList();
     }
 
 

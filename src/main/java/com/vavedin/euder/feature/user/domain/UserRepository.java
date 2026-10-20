@@ -2,6 +2,8 @@ package com.vavedin.euder.feature.user.domain;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,9 +26,15 @@ public class UserRepository {
                 .findFirst();
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        return userDatabase.getUsers().stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findFirst();
+    public Collection<User> getAllUsers() {
+        return userDatabase.getUsers();
+    }
+
+    public Collection<User> getAllCustomers() {
+        return userDatabase.getUsers().stream().filter(User::isCustomer).toList();
+    }
+
+    public Optional<User> findById(String id) {
+        return Optional.ofNullable(userDatabase.getUserDatabase().get(id));
     }
 }

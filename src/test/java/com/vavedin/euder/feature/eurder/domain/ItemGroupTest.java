@@ -18,7 +18,7 @@ class ItemGroupTest {
     }
     @ParameterizedTest @ValueSource(ints = {0, -1})
     void rejectsNonPositiveAmount(int amount) {
-        assertThatThrownBy(() -> new ItemGroup("Coffee", new BigDecimal("89.95"),
+        assertThatThrownBy(() -> new ItemGroup("a", "Coffee", new BigDecimal("89.95"),
                 amount, LocalDate.of(2026, 10, 21))).isInstanceOf(IllegalArgumentException.class);
     }
 }

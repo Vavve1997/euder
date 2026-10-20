@@ -13,7 +13,7 @@ class EurderRepositoryTest {
     void savesCompleteEurdersUnderTheirIdsWithoutReplacingPreviousEurder() {
         var database = new EurderDatabase();
         var repository = new EurderRepository(database);
-        var group = new ItemGroup("a Coffee", new BigDecimal("10.00"), 2, LocalDate.of(2026, 10, 21));
+        var group = new ItemGroup("a", "Coffee", new BigDecimal("10.00"), 2, LocalDate.of(2026, 10, 21));
         var first = new Eurder("customer-1", List.of(group));
         var second = new Eurder("customer-2", List.of(group));
         assertThat(repository.addEurder(first)).isSameAs(first);

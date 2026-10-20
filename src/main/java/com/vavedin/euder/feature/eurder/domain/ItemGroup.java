@@ -13,18 +13,20 @@ public class ItemGroup {
     private final LocalDate shippingDate;
 
     public ItemGroup(String itemId, String itemName, BigDecimal unitPrice, int amount, LocalDate shippingDate) {
-        this.itemId = itemId;
+        this.itemId = requireNonBlank(itemId, "itemId");
         this.itemName = requireNonBlank(itemName, "itemName");
+        if (unitPrice == null) {
+            throw new IllegalArgumentException("unitPrice must not be null");
+        }
         this.unitPrice = unitPrice;
         if (amount <= 0) {
             throw new IllegalArgumentException("amount must be greater than zero");
         }
         this.amount = amount;
+        if (shippingDate == null) {
+            throw new IllegalArgumentException("shippingDate must not be null");
+        }
         this.shippingDate = shippingDate;
-    }
-
-    public ItemGroup(String itemName, BigDecimal unitPrice, int amount, LocalDate shippingDate) {
-        this(UUID.randomUUID().toString(), itemName, unitPrice, amount, shippingDate);
     }
 
     private static String requireNonBlank(String value, String fieldName) {

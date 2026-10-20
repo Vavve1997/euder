@@ -18,7 +18,7 @@ class EurderMapperTest {
         var eurder = new Eurder("customer-id", List.of(
                 new ItemGroup("a", "Coffee", new BigDecimal("89.95"), 3, date),
                 new ItemGroup("b", "Toaster", new BigDecimal("29.95"), 2, date.plusDays(6))));
-        var dto = new EurderMapper(new ItemGroupMapper(new ItemRepository(new ItemDatabase()))).toDto(eurder);
+        var dto = new EurderMapper(new ItemGroupMapper()).toDto(eurder);
         assertThat(dto.getId()).isEqualTo(eurder.getId());
         assertThat(dto.getCustomerId()).isEqualTo("customer-id");
         assertThat(dto.getTotalPrice()).isEqualByComparingTo("329.75");

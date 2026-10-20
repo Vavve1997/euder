@@ -8,10 +8,14 @@ import com.vavedin.euder.feature.user.api.dto.CreateUserDto;
 import com.vavedin.euder.feature.user.api.dto.UserDto;
 import com.vavedin.euder.feature.user.domain.User;
 import com.vavedin.euder.feature.user.domain.UserRepository;
+import com.vavedin.euder.feature.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,6 +72,25 @@ class UserServiceTest {
         assertThat(result)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    void getAllUsers_withoutUsers_returnsAnEmptyList() {
+        when(userRepository.getAllUsers()).thenReturn(List.of());
+
+        List<UserDto> result = userService.getAllUsers();
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void getUserById_withUnknownId_throwsIllegalArgumentException() {
+        when(userRepository.findById("unknown-id"))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getUserById("unknown-id"))
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessage("No user was found for id unknown-id");
     }
 
 }

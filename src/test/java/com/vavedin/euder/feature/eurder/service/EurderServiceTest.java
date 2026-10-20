@@ -31,7 +31,7 @@ class EurderServiceTest {
     void setup() {
         items = mock(ItemRepository.class);
         eurderRepository = mock(EurderRepository.class);
-        service = new EurderService(eurderRepository, new EurderMapper(new ItemGroupMapper(items)), items);
+        service = new EurderService(eurderRepository, new EurderMapper(new ItemGroupMapper()), items);
     }
 
     private CreateEurderDto request(int amount) {

@@ -97,4 +97,8 @@ public class User {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public boolean isCustomer() {
+        return role == Role.MEMBER;
+    }
 }

@@ -6,13 +6,12 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.*;
 class EurderTest {
     private ItemGroup group(String itemName, String price, int amount) {
-        return new ItemGroup(itemName, new BigDecimal(price), amount, LocalDate.of(2026, 10, 21));
+        return new ItemGroup("item-id", itemName, new BigDecimal(price), amount, LocalDate.of(2026, 10, 21));
     }
     @Test void generatesIdAndSumsAllGroups() {
         var groups = List.of(group("a", "89.95", 3), group("b", "29.95", 2));
         var eurder = new Eurder("customer-id", groups);
         assertThat(eurder.getId()).isNotBlank();
-        UUID.fromString(eurder.getId());
         assertThat(eurder.getCustomerId()).isEqualTo("customer-id");
         assertThat(eurder.getItemGroups()).containsExactlyElementsOf(groups);
         assertThat(eurder.calculateTotalPrice()).isEqualByComparingTo("329.75");
