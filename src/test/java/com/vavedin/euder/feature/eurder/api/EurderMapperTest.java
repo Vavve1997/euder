@@ -12,6 +12,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class EurderMapperTest {
+
     @Test
     void toDtoIncludesCustomerGroupsDatesPricesAndTotal() {
         var date = LocalDate.of(2026, 10, 21);
