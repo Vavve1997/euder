@@ -4,6 +4,7 @@ import com.vavedin.euder.feature.eurder.api.EurderMapper;
 import com.vavedin.euder.feature.eurder.api.dto.CreateEurderDto;
 import com.vavedin.euder.feature.eurder.api.dto.CreateItemGroupDto;
 import com.vavedin.euder.feature.eurder.api.dto.EurderDto;
+import com.vavedin.euder.feature.eurder.api.dto.EurderReportDto;
 import com.vavedin.euder.feature.eurder.domain.Eurder;
 import com.vavedin.euder.feature.eurder.domain.EurderRepository;
 import com.vavedin.euder.feature.eurder.domain.ItemGroup;
@@ -77,5 +78,9 @@ public class EurderService {
                 requestedGroup.getAmount(),
                 shippingDate
         );
+    }
+
+    public EurderReportDto getReportOfEurders(User user) {
+        return eurderMapper.toReportDto(eurderRepository.findByCustomerId(user.getId()));
     }
 }
