@@ -2,6 +2,7 @@ package com.vavedin.euder.feature.item.api;
 
 import com.vavedin.euder.feature.item.api.dto.CreateItemDto;
 import com.vavedin.euder.feature.item.api.dto.ItemDto;
+import com.vavedin.euder.feature.item.api.dto.UpdateItemDto;
 import com.vavedin.euder.feature.item.service.ItemService;
 import com.vavedin.euder.feature.security.SecurityService;
 import com.vavedin.euder.feature.security.enums.Feature;
@@ -31,4 +32,17 @@ public class ItemController {
         securityService.validateAuthorization(authorization, Feature.ADD_ITEM);
         return itemService.addItem(createItemDto);
     }
+
+    @PutMapping(path = "/{id}", produces = "application/json", consumes = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirement(name = "basicAuth")
+    public ItemDto updateItem(@Parameter(hidden = true)
+                           @RequestHeader(value = "Authorization", required = false) String authorization,
+                           @PathVariable String id,
+                           @RequestBody UpdateItemDto updateItemDto) {
+        securityService.validateAuthorization(authorization, Feature.UPDATE_ITEM);
+        return itemService.updateItem(id, updateItemDto);
+    }
+
+
 }
