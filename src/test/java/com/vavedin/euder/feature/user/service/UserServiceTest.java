@@ -1,5 +1,6 @@
 package com.vavedin.euder.feature.user.service;
 
+import com.vavedin.euder.feature.security.PasswordEncoder;
 import com.vavedin.euder.feature.user.api.AddressMapper;
 import com.vavedin.euder.feature.user.api.UserMapper;
 import com.vavedin.euder.feature.user.api.dto.AddressDto;
@@ -25,7 +26,7 @@ class UserServiceTest {
     @BeforeEach
     void setup() {
         userRepository = Mockito.mock(UserRepository.class);
-        userService = new UserService(new UserMapper(new AddressMapper()), userRepository);
+        userService = new UserService(new UserMapper(new AddressMapper()), userRepository, new PasswordEncoder());
     }
 
     @Test
@@ -38,7 +39,8 @@ class UserServiceTest {
                 "Baratheon",
                 "theonetrueking@gmail.com",
                 address,
-                "0123456789");
+                "0123456789",
+                "PeopleLoveMe");
         when(userRepository.addUser(any(User.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -51,7 +53,7 @@ class UserServiceTest {
 
         assertThat(savedUser)
                 .usingRecursiveComparison()
-                .ignoringFields("id", "address")
+                .ignoringFields("id", "address", "password", "hashedPassword", "role")
                 .isEqualTo(userDto);
 
         UserDto expected = new UserDto(

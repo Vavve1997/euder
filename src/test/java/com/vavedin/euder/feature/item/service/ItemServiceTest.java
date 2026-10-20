@@ -9,8 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.*;
-import static org.codehaus.groovy.runtime.DefaultGroovyMethods.any;
 import static org.mockito.Mockito.*;
 
 class ItemServiceTest {
@@ -29,14 +30,14 @@ class ItemServiceTest {
         CreateItemDto request = new CreateItemDto(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12
         );
 
         Item storedItem = new Item(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12,
                 "stored-item-id"
         );
@@ -57,14 +58,14 @@ class ItemServiceTest {
                 .isEqualTo("Coffee machine");
         assertThat(submittedItem.getDescription())
                 .isEqualTo("Makes excellent coffee");
-        assertThat(submittedItem.getPrice()).isEqualTo(89.95);
+        assertThat(submittedItem.getPrice()).isEqualByComparingTo("89.95");
         assertThat(submittedItem.getAmount()).isEqualTo(12);
         assertThat(submittedItem.getId()).isNotBlank();
 
         ItemDto expected = new ItemDto(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12,
                 "stored-item-id"
         );

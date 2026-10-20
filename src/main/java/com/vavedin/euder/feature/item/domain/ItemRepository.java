@@ -10,4 +10,9 @@ public class ItemRepository {
     public ItemRepository(ItemDatabase itemDatabase) {
         this.itemDatabase = itemDatabase;
     }
+
+    public Item addItem(Item item) {
+        itemDatabase.getItemDatabase().put(item.getId(), item);
+        return item;
+    }
 }

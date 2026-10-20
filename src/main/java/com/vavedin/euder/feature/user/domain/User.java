@@ -15,29 +15,31 @@ public class User {
     private final Address address;
     private final String phoneNumber;
     private final Role role;
-    private String hashedPassword;
+    private final String hashedPassword;
 
-    public User(String firstName, String lastName, String email, Address address, String phoneNumber) {
+    public User(String firstName, String lastName, String email, Address address, String phoneNumber, String hashedPassword) {
         this(firstName,
                 lastName,
                 email,
                 address,
                 phoneNumber,
                 UUID.randomUUID().toString(),
-                Role.MEMBER);
+                Role.MEMBER,
+                hashedPassword);
     }
 
-    public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id) {
+    public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id, String hashedPassword) {
         this(firstName,
                 lastName,
                 email,
                 address,
                 phoneNumber,
                 id,
-                Role.MEMBER);
+                Role.MEMBER,
+                hashedPassword);
     }
 
-    public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id, Role role) {
+    public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id, Role role, String hashedPassword) {
         this.firstName = requireNonBlank(firstName,"firstName");
         this.lastName = requireNonBlank(lastName,"lastName");
         this.email = requireNonBlank(email, "email");
@@ -51,6 +53,7 @@ public class User {
             throw new IllegalArgumentException("role must not be null");
         }
         this.role = role;
+        this.hashedPassword = requireNonBlank(hashedPassword, "hashedPassword");
     }
 
     public boolean canHaveAccessTo(Feature feature) {

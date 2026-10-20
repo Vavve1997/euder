@@ -4,16 +4,18 @@ public class CreateUserDto {
 
     private String firstName, lastName, email, phoneNumber;
     private AddressDto address;
+    private String password;
 
     public CreateUserDto() {
     }
 
-    public CreateUserDto(String firstName, String lastName, String email, AddressDto address, String phoneNumber) {
+    public CreateUserDto(String firstName, String lastName, String email, AddressDto address, String phoneNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -34,5 +36,9 @@ public class CreateUserDto {
 
     public AddressDto getAddress() {
         return address;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

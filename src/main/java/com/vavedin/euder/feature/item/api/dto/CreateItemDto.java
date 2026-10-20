@@ -1,16 +1,18 @@
 package com.vavedin.euder.feature.item.api.dto;
 
+import java.math.BigDecimal;
+
 public class CreateItemDto {
 
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private int amount;
 
     public CreateItemDto() {
     }
 
-    public CreateItemDto(String name, String description, double price, int amount) {
+    public CreateItemDto(String name, String description, BigDecimal price, int amount) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -25,7 +27,7 @@ public class CreateItemDto {
         return description;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

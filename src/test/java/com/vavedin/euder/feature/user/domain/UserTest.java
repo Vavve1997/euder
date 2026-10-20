@@ -1,5 +1,6 @@
 package com.vavedin.euder.feature.user.domain;
 
+import com.vavedin.euder.feature.security.PasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,10 +9,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 
 class UserTest {
+    private static final String HASHED_PASSWORD = "test-password-hash";
     private Address address;
+
 
     @BeforeEach
     void setup() {
@@ -27,7 +31,8 @@ class UserTest {
                 "Baratheon",
                 "theonetrueking@gmail.com",
                 address,
-                "0123456789");
+                "0123456789",
+                "PeopleLoveMe");
 
         assertThat(user.getFirstName()).isEqualTo("Joffrey");
         assertThat(user.getLastName()).isEqualTo("Baratheon");
@@ -46,7 +51,8 @@ class UserTest {
                         "Baratheon",
                         "theonetrueking@gmail.com",
                         address,
-                        "0123456789"));
+                        "0123456789"
+                        , HASHED_PASSWORD));
     }
 
     @ParameterizedTest
@@ -58,7 +64,8 @@ class UserTest {
                         lastName,
                         "theonetrueking@gmail.com",
                         address,
-                        "0123456789"));
+                        "0123456789",
+                        HASHED_PASSWORD));
     }
 
     @ParameterizedTest
@@ -70,7 +77,8 @@ class UserTest {
                         "Baratheon",
                         email,
                         address,
-                        "0123456789"));
+                        "0123456789",
+                        HASHED_PASSWORD));
     }
 
     @Test
@@ -80,7 +88,8 @@ class UserTest {
                         "Baratheon",
                         "theonetrueking@gmail.com",
                         null,
-                        "0123456789"));
+                        "0123456789",
+                        HASHED_PASSWORD));
     }
 
     @ParameterizedTest
@@ -92,7 +101,44 @@ class UserTest {
                         "Baratheon",
                         "theonetrueking@gmail.com",
                         address,
-                        phoneNumber));
+                        phoneNumber,
+                        HASHED_PASSWORD));
     }
 
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "   "})
+    void constructor_userCanNotBeCreatedWithMissingPassword(String password) {
+        assertThrows(IllegalArgumentException.class,
+                () -> new User("Joffrey",
+                        "Baratheon",
+                        "theonetrueking@gmail.com",
+                        address,
+                        "0123456789",
+                        password));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void doesPasswordMatch_returnsEncoderResult(boolean matches) {
+        PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
+
+        User user = new User(
+                "Joffrey",
+                "Baratheon",
+                "theonetrueking@gmail.com",
+                address,
+                "0123456789",
+                HASHED_PASSWORD
+        );
+
+        when(passwordEncoder.matches("PeopleLoveMe", HASHED_PASSWORD))
+                .thenReturn(matches);
+
+        boolean result =
+                user.doesPasswordMatch("PeopleLoveMe", passwordEncoder);
+
+        assertThat(result).isEqualTo(matches);
+        verify(passwordEncoder).matches("PeopleLoveMe", HASHED_PASSWORD);
+    }
 }

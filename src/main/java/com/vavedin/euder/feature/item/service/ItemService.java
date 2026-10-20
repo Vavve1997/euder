@@ -1,6 +1,8 @@
 package com.vavedin.euder.feature.item.service;
 
 import com.vavedin.euder.feature.item.api.ItemMapper;
+import com.vavedin.euder.feature.item.api.dto.CreateItemDto;
+import com.vavedin.euder.feature.item.api.dto.ItemDto;
 import com.vavedin.euder.feature.item.domain.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,9 @@ public class ItemService {
     public ItemService(ItemMapper itemMapper, ItemRepository itemRepository) {
         this.itemMapper = itemMapper;
         this.itemRepository = itemRepository;
+    }
+
+    public ItemDto addItem(CreateItemDto createItemDto) {
+        return itemMapper.toDto(itemRepository.addItem(itemMapper.toEntity(createItemDto)));
     }
 }

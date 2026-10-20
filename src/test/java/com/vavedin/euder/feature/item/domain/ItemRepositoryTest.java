@@ -3,6 +3,8 @@ package com.vavedin.euder.feature.item.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -22,7 +24,7 @@ class ItemRepositoryTest {
         Item item = new Item(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12
         );
 
@@ -40,14 +42,14 @@ class ItemRepositoryTest {
         Item coffeeMachine = new Item(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12
         );
 
         Item toaster = new Item(
                 "Toaster",
                 "Toasts two slices",
-                29.95,
+                new BigDecimal("29.95"),
                 5
         );
 

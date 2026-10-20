@@ -2,6 +2,7 @@ package com.vavedin.euder.feature.item.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
@@ -14,14 +15,14 @@ class ItemTest {
         Item item = new Item(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12
         );
 
         assertThat(item.getName()).isEqualTo("Coffee machine");
         assertThat(item.getDescription())
                 .isEqualTo("Makes excellent coffee");
-        assertThat(item.getPrice()).isEqualTo(89.95);
+        assertThat(item.getPrice()).isEqualByComparingTo("89.95");
         assertThat(item.getAmount()).isEqualTo(12);
         assertThat(item.getId()).isNotBlank();
 
@@ -34,7 +35,7 @@ class ItemTest {
         Item item = new Item(
                 "Coffee machine",
                 "Makes excellent coffee",
-                89.95,
+                new BigDecimal("89.95"),
                 12,
                 "existing-item-id"
         );
@@ -42,7 +43,7 @@ class ItemTest {
         assertThat(item.getName()).isEqualTo("Coffee machine");
         assertThat(item.getDescription())
                 .isEqualTo("Makes excellent coffee");
-        assertThat(item.getPrice()).isEqualTo(89.95);
+        assertThat(item.getPrice()).isEqualByComparingTo("89.95");
         assertThat(item.getAmount()).isEqualTo(12);
         assertThat(item.getId()).isEqualTo("existing-item-id");
     }

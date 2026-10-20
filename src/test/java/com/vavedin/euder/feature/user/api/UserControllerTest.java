@@ -33,7 +33,8 @@ class UserControllerTest {
                 "Baratheon",
                 "theonetrueking@gmail.com",
                 address,
-                "0123456789");
+                "0123456789",
+                "PeopleLoveMe");
         UserDto userDto = new UserDto(createUserDto.getFirstName(),
                 createUserDto.getLastName(),
                 createUserDto.getEmail(),

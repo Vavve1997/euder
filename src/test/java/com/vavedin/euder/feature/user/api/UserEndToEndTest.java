@@ -34,7 +34,8 @@ public class UserEndToEndTest {
                             "houseNumber": 12,
                             "postalCode": 3000,
                             "city": "DragonStone"
-                          }
+                          },
+                          "password": "Thethroneismine"
                         }
                         """)
                 .when()
@@ -69,7 +70,8 @@ public class UserEndToEndTest {
                       "firstName": "Stannis",
                       "lastName": "Baratheon",
                       "email": "stannis@example.com",
-                      "phoneNumber": "011111111"
+                      "phoneNumber": "011111111",
+                      "password": "Thethroneismine"
                     }
                     """)
                 .when()

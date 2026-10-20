@@ -24,20 +24,13 @@ public class UserMapper {
                 user.getId());
     }
 
-    public User toEntity(UserDto userDto) {
-        return new User(userDto.getFirstName(),
-                userDto.getLastName(),
-                userDto.getEmail(),
-                addressMapper.toEntity(userDto.getAddressDto()),
-                userDto.getPhoneNumber(),
-                userDto.getId());
-    }
 
-    public User toEntity(CreateUserDto createUserDto) {
+    public User toEntity(CreateUserDto createUserDto, String hashedPassword) {
         return new User(createUserDto.getFirstName(),
                 createUserDto.getLastName(),
                 createUserDto.getEmail(),
                 addressMapper.toEntity(createUserDto.getAddress()),
-                createUserDto.getPhoneNumber());
+                createUserDto.getPhoneNumber(),
+                hashedPassword);
     }
 }

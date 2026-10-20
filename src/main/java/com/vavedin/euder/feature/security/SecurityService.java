@@ -5,10 +5,12 @@ import com.vavedin.euder.feature.security.exceptions.UnauthorizedException;
 import com.vavedin.euder.feature.user.domain.User;
 import com.vavedin.euder.feature.user.domain.UserRepository;
 import com.vavedin.euder.feature.security.exceptions.FeatureAccessDeniedException;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+@Service
 public class SecurityService {
     private final static String BASIC_PREFIX = "Basic ";
     private final UserRepository userRepository;
@@ -26,7 +28,7 @@ public class SecurityService {
     }
 
     private User authenticate(String authorization) {
-        if (authorization == null || !authorization.startsWith(BASIC_PREFIX)) throw new UnauthorizedException();
+        if (authorization == null || !authorization.regionMatches(true, 0, BASIC_PREFIX, 0, BASIC_PREFIX.length())) throw new UnauthorizedException();
         String encodedCredentials = authorization.substring(BASIC_PREFIX.length());
         String decodedCredentials = getDecodedCredentials(encodedCredentials);
 

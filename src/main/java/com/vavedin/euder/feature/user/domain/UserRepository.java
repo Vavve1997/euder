@@ -23,4 +23,10 @@ public class UserRepository {
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
+
+    public Optional<User> findUserByEmail(String email) {
+        return userDatabase.getUsers().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst();
+    }
 }
