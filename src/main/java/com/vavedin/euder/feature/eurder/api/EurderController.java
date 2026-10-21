@@ -44,4 +44,14 @@ public class EurderController {
         User user = securityService.validateAuthorization(authorization, Feature.VIEW_OWN_EURDERS);
         return eurderService.getReportOfEurders(user);
     }
+
+    @PostMapping(path = "/reorder/{id}", produces = "application/json")
+    @SecurityRequirement(name = "basicAuth")
+    @ResponseStatus(HttpStatus.CREATED)
+    public EurderDto reorderExistingEurder(@Parameter(hidden = true)
+                                               @RequestHeader(value = "Authorization", required = false) String authorization,
+                                           @PathVariable String id) {
+        User user = securityService.validateAuthorization(authorization, Feature.REORDER_OWN_ORDER);
+        return eurderService.reorderExistingEurder(id, user);
+    }
 }

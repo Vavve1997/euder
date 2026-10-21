@@ -140,20 +140,20 @@ class EurderReportEndToEndTest {
 
     @Test
     void getReport_returnsOwnEurdersWithCorrectDetailsAndTotals() {
-        // Eerste bestelling: 2 × 10.00 + 3 × 3.50 = 30.50
+        //total: 2 × 10.00 + 3 × 3.50 = 30.50
         Eurder firstEurder = storeEurder(
                 customer,
                 createItemGroup(coffee, 2),
                 createItemGroup(tea, 3)
         );
 
-        // Tweede bestelling: 1 × 10.00 = 10.00
+        //total:  1 × 10.00 = 10.00
         Eurder secondEurder = storeEurder(
                 customer,
                 createItemGroup(coffee, 1)
         );
 
-        // Deze 100.00 mag niet in het rapport of totaal terechtkomen.
+        // This should not enter report
         storeEurder(
                 otherCustomer,
                 createItemGroup(coffee, 10)

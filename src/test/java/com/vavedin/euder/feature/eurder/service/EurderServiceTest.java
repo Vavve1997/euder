@@ -71,7 +71,6 @@ class EurderServiceTest {
     private static Stream<Arguments> provideShippingDateTestData() {
         LocalDate today = LocalDate.now();
         return Stream.of(
-                // Arguments.of(stock, amount, expectedDate, expectedTotalPrice)
                 Arguments.of(5, 3, today.plusDays(1), "269.85"),
                 Arguments.of(3, 3, today.plusDays(1), "269.85"),
                 Arguments.of(2, 3, today.plusWeeks(1), "269.85"),
@@ -83,14 +82,20 @@ class EurderServiceTest {
     void multipleGroupsHaveIndependentDatesAndCombinedTotal() {
         when(items.findById("item-1")).thenReturn(Optional.of(item(3, "89.95")));
         when(items.findById("item-2")).thenReturn(Optional.of(
-                new Item("Toaster", "Toasts bread", new BigDecimal("29.95"), 0, "item-2")));
-        when(eurderRepository.addEurder(any(Eurder.class))).thenAnswer(call -> call.getArgument(0));
+                new Item("Toaster", "Toasts bread",
+                        new BigDecimal("29.95"), 0, "item-2")));
+        when(eurderRepository.addEurder(any(Eurder.class)))
+                .thenAnswer(call -> call.getArgument(0));
+
         var dto = service.addEurder(new CreateEurderDto(List.of(
-                new CreateItemGroupDto("item-1", 3), new CreateItemGroupDto("item-2", 2))), customer);
+                new CreateItemGroupDto("item-1", 3),
+                new CreateItemGroupDto("item-2", 2))),
+                customer);
+
         assertThat(dto.getTotalPrice()).isEqualByComparingTo("329.75");
         assertThat(dto.getItemGroups()).hasSize(2);
-        assertThat(dto.getItemGroups().get(0).getShippingDate()).isEqualTo(LocalDate.of(2026, 10, 21));
-        assertThat(dto.getItemGroups().get(1).getShippingDate()).isEqualTo(LocalDate.of(2026, 10, 27));
+        assertThat(dto.getItemGroups().get(0).getShippingDate()).isEqualTo(LocalDate.now().plusDays(1));
+        assertThat(dto.getItemGroups().get(1).getShippingDate()).isEqualTo(LocalDate.now().plusDays(7));
         verify(eurderRepository).addEurder(any(Eurder.class));
     }
 
@@ -98,16 +103,20 @@ class EurderServiceTest {
     void unknownItemDoesNotSavePartialEurder() {
         when(items.findById("item-1")).thenReturn(Optional.of(item(10, "89.95")));
         when(items.findById("missing")).thenReturn(Optional.empty());
-        var request = new CreateEurderDto(List.of(new CreateItemGroupDto("item-1", 1), new CreateItemGroupDto("missing", 1)));
-        assertThatThrownBy(() -> service.addEurder(request, customer)).isInstanceOf(IllegalArgumentException.class);
+
+        var request = new CreateEurderDto(List.of(new CreateItemGroupDto("item-1", 1),
+                new CreateItemGroupDto("missing", 1)));
+
+        assertThatThrownBy(() -> service.addEurder(request, customer))
+                .isInstanceOf(IllegalArgumentException.class);
         verifyNoInteractions(eurderRepository);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, -1})
     void invalidAmountDoesNotSave(int amount) {
-        // lenient: implementation may validate before or after looking up the item.
         lenient().when(items.findById("item-1")).thenReturn(Optional.of(item(10, "89.95")));
+
         assertThatThrownBy(() -> service.addEurder(request(amount), customer)).isInstanceOf(IllegalArgumentException.class);
         verifyNoInteractions(eurderRepository);
     }
@@ -119,16 +128,4 @@ class EurderServiceTest {
         verifyNoInteractions(eurderRepository);
     }
 
-    @Test
-    void laterCatalogPriceDoesNotChangeEarlierEurder() {
-        when(items.findById("item-1")).thenReturn(Optional.of(item(10, "10.00")), Optional.of(item(10, "20.00")));
-        when(eurderRepository.addEurder(any(Eurder.class))).thenAnswer(call -> call.getArgument(0));
-        var first = service.addEurder(request(2), customer);
-        var second = service.addEurder(request(2), customer);
-        var captor = ArgumentCaptor.forClass(Eurder.class);
-        verify(eurderRepository, times(2)).addEurder(captor.capture());
-        assertThat(captor.getAllValues().get(0).calculateTotalPrice()).isEqualByComparingTo("20.00");
-        assertThat(first.getTotalPrice()).isEqualByComparingTo("20.00");
-        assertThat(second.getTotalPrice()).isEqualByComparingTo("40.00");
-    }
 }

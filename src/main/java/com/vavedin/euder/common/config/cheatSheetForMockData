@@ -1,0 +1,46 @@
+| Naam / user-id | Rol | Gebruikersnaam | Wachtwoord |
+|---|---|---|---|
+| Tyrion / `tyrion` | ADMIN | `tyrion@westeros.test` | `ADragonDrinks!` |
+| Varys / `varys` | ADMIN | `varys@westeros.test` | `LittleBirds123!` |
+| Stannis / `stannis` | MEMBER | `stannis@westeros.test` | `TheThroneIsMine!` |
+| Jon / `jon` | MEMBER | `jon@westeros.test` | `YouKnowNothing!` |
+| Daenerys / `daenerys` | MEMBER | `daenerys@westeros.test` | `Dracarys123!` |
+| Arya / `arya` | MEMBER | `arya@westeros.test` | `NotToday123!` |
+
+
+---------------------------------------------------------------------
+
+
+| Item-id | Item | Prijs | Voorraad |
+|---|---|---:|---:|
+| `longsword` | Castle-forged longsword | 150,00 | 12 |
+| `shield` | Baratheon shield | 80,00 | 5 |
+| `wildfire` | Wildfire jar | 25,00 | 0 |
+| `bread` | Hot Pie’s bread | 2,50 | 50 |
+| `wine` | Arbor Gold | 18,00 | 24 |
+| `raven` | Messenger raven | 45,00 | 3 |
+| `cloak` | Night’s Watch cloak | 60,00 | 8 |
+| `dragonglass` | Dragonglass dagger | 35,00 | 2 |
+
+
+---------------------------------------------------------------------
+
+
+| Label | Gebruikersnaam | Inhoud | Totaal | Verzending |
+|---|---|---|---:|---|
+| `STANNIS-1` | `stannis@westeros.test` | 2 longswords + 1 shield | 380,00 | Beide vandaag − 3 dagen |
+| `STANNIS-2` | `stannis@westeros.test` | 10 wildfire + 4 bread | 260,00 | Wildfire + 7 dagen; bread morgen |
+| `STANNIS-3` | `stannis@westeros.test` | 3 wine + 1 raven | 99,00 | Beide vandaag |
+| `JON-1` | `jon@westeros.test` | 1 cloak + 4 dragonglass | 200,00 | Cloak morgen; dragonglass + 7 dagen |
+| `DAENERYS-1` | `daenerys@westeros.test` | 3 wildfire + 2 ravens | 165,00 | Wildfire + 7 dagen; ravens morgen |
+
+
+---------------------------------------------------------------------
+
+
+| Klant | Aantal bestellingen | Rapporttotaal |
+|---|---:|---:|
+| Stannis | 3 | **739,00** |
+| Jon | 1 | **200,00** |
+| Daenerys | 1 | **165,00** |
+| Arya | 0 | **0,00** |

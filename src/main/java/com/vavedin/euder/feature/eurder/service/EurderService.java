@@ -1,5 +1,7 @@
 package com.vavedin.euder.feature.eurder.service;
 
+import com.vavedin.euder.common.exception.ForbiddenException;
+import com.vavedin.euder.common.exception.NotFoundException;
 import com.vavedin.euder.feature.eurder.api.EurderMapper;
 import com.vavedin.euder.feature.eurder.api.dto.CreateEurderDto;
 import com.vavedin.euder.feature.eurder.api.dto.CreateItemGroupDto;
@@ -10,10 +12,13 @@ import com.vavedin.euder.feature.eurder.domain.EurderRepository;
 import com.vavedin.euder.feature.eurder.domain.ItemGroup;
 import com.vavedin.euder.feature.item.domain.Item;
 import com.vavedin.euder.feature.item.domain.ItemRepository;
+import com.vavedin.euder.feature.security.exceptions.FeatureAccessDeniedException;
+import com.vavedin.euder.feature.security.exceptions.UnauthorizedException;
 import com.vavedin.euder.feature.user.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -83,4 +88,28 @@ public class EurderService {
     public EurderReportDto getReportOfEurders(User user) {
         return eurderMapper.toReportDto(eurderRepository.findByCustomerId(user.getId()));
     }
+
+    public EurderDto reorderExistingEurder(String id, User user) {
+        Eurder originalEurder = eurderRepository.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException("eurder not found for id " + id)
+                );
+
+        if (!originalEurder.getCustomerId().equals(user.getId())) {
+            throw new ForbiddenException(
+                    "You can only reorder your own eurders"
+            );
+        }
+
+        List<CreateItemGroupDto> requestedGroups =
+                originalEurder.getItemGroups().stream()
+                        .map(group -> new CreateItemGroupDto(
+                                group.getItemId(),
+                                group.getAmount()
+                        ))
+                        .toList();
+
+        return addEurder(new CreateEurderDto(requestedGroups), user);
+    }
+
 }

@@ -15,7 +15,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setup() {
-        userDatabase = new UserDatabase(new PasswordEncoder());
+        userDatabase = new UserDatabase();
         userRepository = new UserRepository(userDatabase);
         address = new Address("RedKeepRoad",
                 1,

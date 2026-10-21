@@ -12,16 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserDatabase {
 
     private final ConcurrentHashMap<String, User> userDatabase;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserDatabase(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+
+    public UserDatabase() {
+
         userDatabase = new ConcurrentHashMap<String, User>();
-        User admin = new User("Admin", "Admin", "admin",
-                new Address("Admin", 1, 1000, "Admin"),
-                "123", UUID.randomUUID().toString(), Role.ADMIN,
-                passwordEncoder.encode("root"));
-        userDatabase.put(admin.getId(), admin);
+
     }
 
     public ConcurrentHashMap<String, User> getUserDatabase() {

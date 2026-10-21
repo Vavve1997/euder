@@ -31,13 +31,22 @@ public class UserController {
         return userService.addUser(createUserDto);
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(path = "/customers", produces = "application/json")
     @SecurityRequirement(name = "basicAuth")
     public List<UserDto> getAllCustomers(@Parameter(hidden = true)
                                   @RequestHeader(value = "Authorization", required = false)
                                       String authorization) {
-        securityService.validateAuthorization(authorization, Feature.VIEW_USERS);
+        securityService.validateAuthorization(authorization, Feature.VIEW_CUSTOMERS);
         return userService.getAllCustomers();
+    }
+
+    @GetMapping( produces = "application/json")
+    @SecurityRequirement(name = "basicAuth")
+    public List<UserDto> getAllUsers(@Parameter(hidden = true)
+                                         @RequestHeader(value = "Authorization", required = false)
+                                         String authorization) {
+        securityService.validateAuthorization(authorization, Feature.VIEW_USERS);
+        return userService.getAllUsers();
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")

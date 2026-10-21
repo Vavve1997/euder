@@ -24,4 +24,8 @@ public class EurderRepository {
                 .stream().filter(eurder -> eurder.getCustomerId().equals(id))
                 .toList();
     }
+
+    public Optional<Eurder> findById(String id) {
+        return Optional.ofNullable(eurderDatabase.getEurderDatabase().get(id));
+    }
 }
