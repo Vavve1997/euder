@@ -88,7 +88,8 @@ class EurderReorderMockMvcTest {
 
         originalEurder = new Eurder(
                 stannis.getId(),
-                List.of(originalGroup)
+                List.of(originalGroup),
+                stannis.getAddress()
         );
 
         eurderDatabase.getEurderDatabase().put(

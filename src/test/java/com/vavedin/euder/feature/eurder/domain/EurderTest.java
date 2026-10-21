@@ -1,4 +1,5 @@
 package com.vavedin.euder.feature.eurder.domain;
+import com.vavedin.euder.feature.user.domain.Address;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,23 +11,23 @@ class EurderTest {
     }
     @Test void generatesIdAndSumsAllGroups() {
         var groups = List.of(group("a", "89.95", 3), group("b", "29.95", 2));
-        var eurder = new Eurder("customer-id", groups);
+        var eurder = new Eurder("customer-id", groups, new Address("Kingsroad", 1, 1000, "Winterfell"));
         assertThat(eurder.getId()).isNotBlank();
         assertThat(eurder.getCustomerId()).isEqualTo("customer-id");
         assertThat(eurder.getItemGroups()).containsExactlyElementsOf(groups);
         assertThat(eurder.calculateTotalPrice()).isEqualByComparingTo("329.75");
     }
     @Test void requiresAtLeastOneGroup() {
-        assertThatThrownBy(() -> new Eurder("customer-id", List.of())).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> new Eurder("customer-id", null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Eurder("customer-id", List.of(), new Address("Kingsroad", 1, 1000, "Winterfell"))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> new Eurder("customer-id", null, new Address("Kingsroad", 1, 1000, "Winterfell"))).isInstanceOf(IllegalArgumentException.class);
     }
     @Test void protectsGroupsFromExternalChanges() {
         var first = group("a", "10.00", 1);
         var input = new ArrayList<>(List.of(first));
-        var eurder = new Eurder("customer-id", input);
+        var eurder = new Eurder("customer-id", input, new Address("Kingsroad", 1, 1000, "Winterfell"));
         input.clear();
         assertThat(eurder.getItemGroups()).containsExactly(first);
-        // Contract: getItemGroups returns an unmodifiable list.
+
         assertThatThrownBy(() -> eurder.getItemGroups().clear()).isInstanceOf(UnsupportedOperationException.class);
     }
 }

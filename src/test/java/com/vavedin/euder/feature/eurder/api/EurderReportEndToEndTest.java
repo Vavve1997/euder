@@ -105,7 +105,8 @@ class EurderReportEndToEndTest {
     private Eurder storeEurder(User owner, ItemGroup... itemGroups) {
         Eurder eurder = new Eurder(
                 owner.getId(),
-                List.of(itemGroups)
+                List.of(itemGroups),
+                owner.getAddress()
         );
 
         eurderDatabase.getEurderDatabase().put(eurder.getId(), eurder);

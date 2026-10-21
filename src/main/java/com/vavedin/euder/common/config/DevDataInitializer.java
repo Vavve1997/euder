@@ -287,7 +287,8 @@ public class DevDataInitializer implements CommandLineRunner {
     ) {
         Eurder eurder = new Eurder(
                 customer.getId(),
-                List.of(itemGroups)
+                List.of(itemGroups),
+                customer.getAddress()
         );
 
         eurderRepository.addEurder(eurder);

@@ -28,4 +28,10 @@ public class EurderRepository {
     public Optional<Eurder> findById(String id) {
         return Optional.ofNullable(eurderDatabase.getEurderDatabase().get(id));
     }
+
+    public List<Eurder> findAllEurdersWithItemsShippingToday() {
+        return eurderDatabase.getEurderDatabase().values().stream()
+                .filter(Eurder::hasItemGroupShippingToday)
+                .toList();
+    }
 }

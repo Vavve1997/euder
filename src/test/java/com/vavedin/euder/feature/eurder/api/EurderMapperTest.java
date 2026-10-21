@@ -3,6 +3,7 @@ package com.vavedin.euder.feature.eurder.api;
 import com.vavedin.euder.feature.eurder.domain.*;
 import com.vavedin.euder.feature.item.domain.ItemDatabase;
 import com.vavedin.euder.feature.item.domain.ItemRepository;
+import com.vavedin.euder.feature.user.domain.Address;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,7 +19,8 @@ class EurderMapperTest {
         var date = LocalDate.of(2026, 10, 21);
         var eurder = new Eurder("customer-id", List.of(
                 new ItemGroup("a", "Coffee", new BigDecimal("89.95"), 3, date),
-                new ItemGroup("b", "Toaster", new BigDecimal("29.95"), 2, date.plusDays(6))));
+                new ItemGroup("b", "Toaster", new BigDecimal("29.95"), 2, date.plusDays(6))),
+                new Address("Kingsroad", 1, 1000, "Winterfell"));
         var dto = new EurderMapper(new ItemGroupMapper()).toDto(eurder);
         assertThat(dto.getId()).isEqualTo(eurder.getId());
         assertThat(dto.getCustomerId()).isEqualTo("customer-id");

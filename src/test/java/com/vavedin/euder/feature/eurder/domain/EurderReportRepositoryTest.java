@@ -1,5 +1,6 @@
 package com.vavedin.euder.feature.eurder.domain;
 
+import com.vavedin.euder.feature.user.domain.Address;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,13 +30,13 @@ class EurderReportRepositoryTest {
         );
 
         Eurder firstEurder = new Eurder(
-                "customer-1", List.of(itemGroup)
+                "customer-1", List.of(itemGroup),new Address("Kingsroad", 1, 1000, "Winterfell")
         );
         Eurder secondEurder = new Eurder(
-                "customer-1", List.of(itemGroup)
+                "customer-1", List.of(itemGroup), new Address("Kingsroad", 1, 1000, "Winterfell")
         );
         Eurder otherCustomersEurder = new Eurder(
-                "customer-2", List.of(itemGroup)
+                "customer-2", List.of(itemGroup), new Address("Kingsroad", 1, 1000, "Winterfell")
         );
 
         eurderRepository.addEurder(firstEurder);
@@ -60,7 +61,7 @@ class EurderReportRepositoryTest {
         );
 
         eurderRepository.addEurder(
-                new Eurder("another-customer", List.of(itemGroup))
+                new Eurder("another-customer", List.of(itemGroup), new Address("Kingsroad", 1, 1000, "Winterfell"))
         );
 
         List<Eurder> result =

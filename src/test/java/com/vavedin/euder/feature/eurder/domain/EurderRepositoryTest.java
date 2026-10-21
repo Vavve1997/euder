@@ -1,5 +1,6 @@
 package com.vavedin.euder.feature.eurder.domain;
 
+import com.vavedin.euder.feature.user.domain.Address;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -14,8 +15,8 @@ class EurderRepositoryTest {
         var database = new EurderDatabase();
         var repository = new EurderRepository(database);
         var group = new ItemGroup("a", "Coffee", new BigDecimal("10.00"), 2, LocalDate.of(2026, 10, 21));
-        var first = new Eurder("customer-1", List.of(group));
-        var second = new Eurder("customer-2", List.of(group));
+        var first = new Eurder("customer-1", List.of(group), new Address("Kingsroad", 1, 1000, "Winterfell"));
+        var second = new Eurder("customer-2", List.of(group), new Address("Kingsroad", 1, 1000, "Winterfell"));
         assertThat(repository.addEurder(first)).isSameAs(first);
         assertThat(repository.addEurder(second)).isSameAs(second);
         assertThat(database.getEurderDatabase()).hasSize(2)

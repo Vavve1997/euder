@@ -6,7 +6,7 @@ import static com.vavedin.euder.feature.security.enums.Feature.*;
 
 
 public enum Role {
-    ADMIN(List.of(ADD_ITEM, VIEW_USERS, VIEW_CUSTOMERS, UPDATE_ITEM)),
+    ADMIN(List.of(ADD_ITEM, VIEW_USERS, VIEW_CUSTOMERS, UPDATE_ITEM, VIEW_SHIPMENTS)),
     MEMBER(List.of(ORDER_ITEM, VIEW_OWN_EURDERS, REORDER_OWN_ORDER));
 
     private final List<Feature> featureList;

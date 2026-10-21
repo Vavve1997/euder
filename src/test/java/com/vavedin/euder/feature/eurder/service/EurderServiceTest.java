@@ -5,6 +5,7 @@ import com.vavedin.euder.feature.eurder.api.ItemGroupMapper;
 import com.vavedin.euder.feature.eurder.api.dto.*;
 import com.vavedin.euder.feature.eurder.domain.*;
 import com.vavedin.euder.feature.item.domain.*;
+import com.vavedin.euder.feature.user.api.AddressMapper;
 import com.vavedin.euder.feature.user.domain.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +32,7 @@ class EurderServiceTest {
     void setup() {
         items = mock(ItemRepository.class);
         eurderRepository = mock(EurderRepository.class);
-        service = new EurderService(eurderRepository, new EurderMapper(new ItemGroupMapper()), items);
+        service = new EurderService(eurderRepository, new EurderMapper(new ItemGroupMapper()), items, new ItemGroupMapper(), new AddressMapper());
     }
 
     private CreateEurderDto request(int amount) {

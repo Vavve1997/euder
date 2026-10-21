@@ -3,6 +3,7 @@ package com.vavedin.euder.feature.eurder.api;
 import com.vavedin.euder.feature.eurder.api.dto.CreateEurderDto;
 import com.vavedin.euder.feature.eurder.api.dto.EurderDto;
 import com.vavedin.euder.feature.eurder.api.dto.EurderReportDto;
+import com.vavedin.euder.feature.eurder.api.dto.EurderShipmentDto;
 import com.vavedin.euder.feature.eurder.service.EurderService;
 import com.vavedin.euder.feature.security.SecurityService;
 import com.vavedin.euder.feature.security.enums.Feature;
@@ -54,4 +55,13 @@ public class EurderController {
         User user = securityService.validateAuthorization(authorization, Feature.REORDER_OWN_ORDER);
         return eurderService.reorderExistingEurder(id, user);
     }
+
+    @GetMapping(path = "/shipping_today", produces = "application/json")
+    @SecurityRequirement(name = "basicAuth")
+    public List<EurderShipmentDto> getEurdersShippingToday(@Parameter(hidden = true)
+                                              @RequestHeader(value = "Authorization", required = false) String authorization) {
+        User user = securityService.validateAuthorization(authorization, Feature.VIEW_SHIPMENTS);
+        return eurderService.getAllEurdersShippingToday();
+    }
+
 }

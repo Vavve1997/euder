@@ -1,6 +1,9 @@
 package com.vavedin.euder.feature.eurder.domain;
 
+import com.vavedin.euder.feature.user.domain.Address;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,9 +13,14 @@ public class Eurder {
     private final String customerId;
     private final List<ItemGroup> itemGroups;
     private final String id;
+    private final Address shippingAddress;
 
-    public Eurder(String customerId, List<ItemGroup> itemGroups) {
+    public Eurder(String customerId, List<ItemGroup> itemGroups, Address shippingAddress) {
         this.customerId = requireNonBlank(customerId, "customerId");
+        if (shippingAddress == null) {
+            throw new IllegalArgumentException("shippingAddress must not be empty or null");
+        }
+        this.shippingAddress = shippingAddress;
         if (itemGroups == null || itemGroups.isEmpty()) {
             throw new IllegalArgumentException("itemGroup must not be empty or null");
         }
@@ -45,5 +53,19 @@ public class Eurder {
         return itemGroups.stream()
                 .map(ItemGroup::calculateTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public boolean hasItemGroupShippingToday() {
+        return !getAllItemGroupsThatShipToday().isEmpty();
+    }
+
+    public List<ItemGroup> getAllItemGroupsThatShipToday() {
+        return itemGroups.stream()
+                .filter(itemGroup -> itemGroup.getShippingDate().equals(LocalDate.now()))
+                .toList();
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 }
