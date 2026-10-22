@@ -195,7 +195,7 @@ public class DevDataInitializer implements CommandLineRunner {
                 "STANNIS-2",
                 stannis,
                 group(wildfire, 10, today.plusDays(7)),
-                group(bread, 4, today.plusDays(1))
+                group(bread, 4, today)
         );
 
         createEurder(
@@ -216,7 +216,7 @@ public class DevDataInitializer implements CommandLineRunner {
                 "DAENERYS-1",
                 daenerys,
                 group(wildfire, 3, today.plusDays(7)),
-                group(raven, 2, today.plusDays(1))
+                group(raven, 2, today)
         );
 
         logger.info(

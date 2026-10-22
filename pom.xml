@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vavedin</groupId>
-    <artifactId>euder</artifactId>
+    <artifactId>eurder</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>euder</name>
     <description>euder</description>

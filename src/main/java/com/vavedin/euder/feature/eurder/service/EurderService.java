@@ -79,6 +79,10 @@ public class EurderService {
 
         LocalDate shippingDate = today.plusDays(enoughStockAvailable ? 1 : 7);
 
+        if (enoughStockAvailable) {
+            item.takeAmountFromStock(requestedGroup.getAmount());
+        }
+
         return new ItemGroup(
                 item.getId(),
                 item.getName(),

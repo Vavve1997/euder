@@ -61,4 +61,9 @@ public class Item {
     public String getId() {
         return id;
     }
+
+    public void takeAmountFromStock(int amount) {
+        this.amount = Math.max(0, this.amount - amount);
+
+    }
 }
