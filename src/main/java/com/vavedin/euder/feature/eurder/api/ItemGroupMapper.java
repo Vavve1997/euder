@@ -1,13 +1,9 @@
 package com.vavedin.euder.feature.eurder.api;
 
-import com.vavedin.euder.feature.eurder.api.dto.CreateItemGroupDto;
 import com.vavedin.euder.feature.eurder.api.dto.ItemGroupDto;
 import com.vavedin.euder.feature.eurder.domain.ItemGroup;
-import com.vavedin.euder.feature.item.domain.Item;
-import com.vavedin.euder.feature.item.domain.ItemRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 

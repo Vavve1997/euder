@@ -1,15 +1,34 @@
 package com.vavedin.euder.feature.item.domain;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Entity
+@Table(name = "items")
 public class Item {
 
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private int amount;
+    @Id
+    @Column(nullable = false, length = 255)
     private String id;
+
+    @Column(nullable = false, length = 200)
+    private String name;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String description;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    private int amount;
+
+    @Version
+    @Column(nullable = false)
+    private Long version;
+
 
     public Item(String name, String description, BigDecimal price, int amount, String id) {
         this.name = requireNonBlank(name, "name");
@@ -31,6 +50,10 @@ public class Item {
                 price,
                 amount,
                 UUID.randomUUID().toString());
+    }
+
+    public Item() {
+
     }
 
     private static String requireNonBlank(String value, String fieldName) {

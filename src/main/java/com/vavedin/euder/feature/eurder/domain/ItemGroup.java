@@ -1,16 +1,36 @@
 package com.vavedin.euder.feature.eurder.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
+@Table(name = "item_groups")
 public class ItemGroup {
 
-    private final String itemId;
-    private final String itemName;
-    private final BigDecimal unitPrice;
-    private final int amount;
-    private final LocalDate shippingDate;
+    @Id
+    @Column(nullable = false, length = 255)
+    private String id;
+
+    @Column(name = "item_id", nullable = false, length = 255)
+    private String itemId;
+
+    @Column(name = "item_name", nullable = false, length = 200)
+    private String itemName;
+
+    @Column(name = "unit_price", nullable = false, precision = 12, scale = 2)
+    private BigDecimal unitPrice;
+
+    @Column(nullable = false)
+    private int amount;
+
+    @Column(name = "shipping_date", nullable = false)
+    private LocalDate shippingDate;
 
     public ItemGroup(String itemId, String itemName, BigDecimal unitPrice, int amount, LocalDate shippingDate) {
         this.itemId = requireNonBlank(itemId, "itemId");
@@ -27,6 +47,11 @@ public class ItemGroup {
             throw new IllegalArgumentException("shippingDate must not be null");
         }
         this.shippingDate = shippingDate;
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public ItemGroup() {
+
     }
 
     private static String requireNonBlank(String value, String fieldName) {
@@ -60,5 +85,9 @@ public class ItemGroup {
 
     public BigDecimal calculateTotalPrice() {
         return unitPrice.multiply(BigDecimal.valueOf(amount));
+    }
+
+    public String getId() {
+        return id;
     }
 }

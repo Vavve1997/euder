@@ -3,19 +3,40 @@ package com.vavedin.euder.feature.user.domain;
 import com.vavedin.euder.feature.security.PasswordEncoder;
 import com.vavedin.euder.feature.security.enums.Feature;
 import com.vavedin.euder.feature.security.enums.Role;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 public class User {
 
-    private final String id;
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final Address address;
-    private final String phoneNumber;
-    private final Role role;
-    private final String hashedPassword;
+    @Id
+    @Column(nullable = false, length = 255)
+    private String id;
+
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(nullable = false, unique = true, length = 254)
+    private String email;
+
+    @Embedded
+    private Address address;
+
+    @Column(name = "phone_number", nullable = false, length = 30)
+    private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private Role role;
+
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String hashedPassword;
+
 
     public User(String firstName, String lastName, String email, Address address, String phoneNumber, String hashedPassword) {
         this(firstName,
@@ -40,8 +61,8 @@ public class User {
     }
 
     public User(String firstName, String lastName, String email, Address address, String phoneNumber, String id, Role role, String hashedPassword) {
-        this.firstName = requireNonBlank(firstName,"firstName");
-        this.lastName = requireNonBlank(lastName,"lastName");
+        this.firstName = requireNonBlank(firstName, "firstName");
+        this.lastName = requireNonBlank(lastName, "lastName");
         this.email = requireNonBlank(email, "email");
         if (address == null) {
             throw new IllegalArgumentException("address must not be null");
@@ -54,6 +75,10 @@ public class User {
         }
         this.role = role;
         this.hashedPassword = requireNonBlank(hashedPassword, "hashedPassword");
+    }
+
+    public User() {
+
     }
 
     public boolean canHaveAccessTo(Feature feature) {

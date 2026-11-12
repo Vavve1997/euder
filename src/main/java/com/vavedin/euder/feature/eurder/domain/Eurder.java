@@ -1,6 +1,7 @@
 package com.vavedin.euder.feature.eurder.domain;
 
 import com.vavedin.euder.feature.user.domain.Address;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,12 +9,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Table(name = "eurders")
 public class Eurder {
 
-    private final String customerId;
-    private final List<ItemGroup> itemGroups;
-    private final String id;
-    private final Address shippingAddress;
+    @Id
+    @Column(nullable = false, length = 255)
+    private String id;
+
+    @Column(name = "customer_id", nullable = false, length = 255)
+    private String customerId;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "eurder_id", nullable = false)
+    private List<ItemGroup> itemGroups = new ArrayList<>();
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "street",
+                    column = @Column(
+                            name = "shipping_street",
+                            nullable = false,
+                            length = 200
+                    )
+            ),
+            @AttributeOverride(
+                    name = "houseNumber",
+                    column = @Column(
+                            name = "shipping_house_number",
+                            nullable = false,
+                            length = 20
+                    )
+            ),
+            @AttributeOverride(
+                    name = "postalCode",
+                    column = @Column(
+                            name = "shipping_postal_code",
+                            nullable = false,
+                            length = 20
+                    )
+            ),
+            @AttributeOverride(
+                    name = "city",
+                    column = @Column(
+                            name = "shipping_city",
+                            nullable = false,
+                            length = 100
+                    )
+            )
+    })
+    private Address shippingAddress;
+
 
     public Eurder(String customerId, List<ItemGroup> itemGroups, Address shippingAddress) {
         this.customerId = requireNonBlank(customerId, "customerId");
@@ -26,6 +73,10 @@ public class Eurder {
         }
         this.itemGroups = new ArrayList<>(itemGroups);
         id = UUID.randomUUID().toString();
+    }
+
+    public Eurder() {
+
     }
 
     private static String requireNonBlank(String value, String fieldName) {

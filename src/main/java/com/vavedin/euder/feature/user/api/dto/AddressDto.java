@@ -2,12 +2,13 @@ package com.vavedin.euder.feature.user.api.dto;
 
 public class AddressDto {
     private String street, city;
-    private int houseNumber, postalCode;
+    private String houseNumber;
+    private String postalCode;
 
     public AddressDto() {
     }
 
-    public AddressDto(String street, int houseNumber, int postalCode, String city) {
+    public AddressDto(String street, String houseNumber, String postalCode, String city) {
         this.street = street;
         this.city = city;
         this.houseNumber = houseNumber;
@@ -22,11 +23,11 @@ public class AddressDto {
         return city;
     }
 
-    public int getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 }

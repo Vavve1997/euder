@@ -1,15 +1,15 @@
 package com.vavedin.euder.common.config;
 
 import com.vavedin.euder.feature.eurder.domain.Eurder;
-import com.vavedin.euder.feature.eurder.domain.EurderRepository;
+import com.vavedin.euder.feature.eurder.domain.EurderRepositoryOutOfUse;
 import com.vavedin.euder.feature.eurder.domain.ItemGroup;
 import com.vavedin.euder.feature.item.domain.Item;
-import com.vavedin.euder.feature.item.domain.ItemRepository;
+import com.vavedin.euder.feature.item.domain.ItemRepositoryOutOfUse;
 import com.vavedin.euder.feature.security.PasswordEncoder;
 import com.vavedin.euder.feature.security.enums.Role;
 import com.vavedin.euder.feature.user.domain.Address;
 import com.vavedin.euder.feature.user.domain.User;
-import com.vavedin.euder.feature.user.domain.UserRepository;
+import com.vavedin.euder.feature.user.domain.UserRepositoryOutOfUse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -27,15 +27,15 @@ public class DevDataInitializer implements CommandLineRunner {
     private static final Logger logger =
             LoggerFactory.getLogger(DevDataInitializer.class);
 
-    private final UserRepository userRepository;
-    private final ItemRepository itemRepository;
-    private final EurderRepository eurderRepository;
+    private final UserRepositoryOutOfUse userRepository;
+    private final ItemRepositoryOutOfUse itemRepository;
+    private final EurderRepositoryOutOfUse eurderRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DevDataInitializer(
-            UserRepository userRepository,
-            ItemRepository itemRepository,
-            EurderRepository eurderRepository,
+            UserRepositoryOutOfUse userRepository,
+            ItemRepositoryOutOfUse itemRepository,
+            EurderRepositoryOutOfUse eurderRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
@@ -238,7 +238,7 @@ public class DevDataInitializer implements CommandLineRunner {
                 firstName,
                 lastName,
                 email,
-                new Address(street, 1, 1000, city),
+                new Address(street, "1", "1000", city),
                 "0123456789",
                 id,
                 role,

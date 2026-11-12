@@ -3,9 +3,10 @@ package com.vavedin.euder.feature.security;
 import com.vavedin.euder.feature.security.enums.Feature;
 import com.vavedin.euder.feature.security.exceptions.UnauthorizedException;
 import com.vavedin.euder.feature.user.domain.User;
-import com.vavedin.euder.feature.user.domain.UserRepository;
+import com.vavedin.euder.feature.user.domain.UserRepositoryOutOfUse;
 import com.vavedin.euder.feature.security.exceptions.FeatureAccessDeniedException;
 import org.springframework.stereotype.Service;
+import com.vavedin.euder.feature.user.domain.UserRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -16,7 +17,10 @@ public class SecurityService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public SecurityService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

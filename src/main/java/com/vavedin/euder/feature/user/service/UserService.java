@@ -6,12 +6,12 @@ import com.vavedin.euder.feature.user.api.dto.CreateUserDto;
 import com.vavedin.euder.feature.user.api.dto.UserDto;
 import com.vavedin.euder.feature.user.domain.User;
 import com.vavedin.euder.feature.user.domain.UserRepository;
+import com.vavedin.euder.feature.user.domain.UserRepositoryOutOfUse;
 import com.vavedin.euder.feature.user.exception.EmailAlreadyExistsException;
 import com.vavedin.euder.feature.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -31,15 +31,16 @@ public class UserService {
             throw new EmailAlreadyExistsException(createUserDto.getEmail());
         }
         String hashedPassword = passwordEncoder.encode(createUserDto.getPassword());
-        return userMapper.toDto(userRepository.addUser(userMapper.toEntity(createUserDto, hashedPassword)));
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(createUserDto, hashedPassword)));
     }
 
     public List<UserDto> getAllUsers() {
-        return userMapper.toDto(userRepository.getAllUsers());
+        return userMapper.toDto(userRepository.findAll());
     }
 
     public List<UserDto> getAllCustomers() {
-        return userMapper.toDto(userRepository.getAllCustomers());
+        return userMapper.toDto(userRepository.findAll()
+                .stream().filter(User::isCustomer).toList());
     }
 
 

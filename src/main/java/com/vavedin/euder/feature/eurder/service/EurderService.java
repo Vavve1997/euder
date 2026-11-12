@@ -11,10 +11,9 @@ import com.vavedin.euder.feature.eurder.domain.ItemGroup;
 import com.vavedin.euder.feature.item.domain.Item;
 import com.vavedin.euder.feature.item.domain.ItemRepository;
 import com.vavedin.euder.feature.user.api.AddressMapper;
-import com.vavedin.euder.feature.user.api.dto.AddressDto;
 import com.vavedin.euder.feature.user.domain.User;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.cfg.MapperBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,9 +27,13 @@ public class EurderService {
     private final ItemGroupMapper itemGroupMapper;
     private final AddressMapper addressMapper;
 
-
-
-    public EurderService(EurderRepository eurderRepository, EurderMapper eurderMapper, ItemRepository itemRepository, ItemGroupMapper itemGroupMapper, AddressMapper addressMapper) {
+    public EurderService(
+            EurderRepository eurderRepository,
+            EurderMapper eurderMapper,
+            ItemRepository itemRepository,
+            ItemGroupMapper itemGroupMapper,
+            AddressMapper addressMapper
+    ) {
         this.eurderRepository = eurderRepository;
         this.eurderMapper = eurderMapper;
         this.itemRepository = itemRepository;
@@ -38,6 +41,7 @@ public class EurderService {
         this.addressMapper = addressMapper;
     }
 
+    @Transactional(readOnly = true)
     public EurderDto addEurder(CreateEurderDto createEurderDto, User customer) {
 
         List<CreateItemGroupDto> requestedGroups = createEurderDto.getItemGroupDtos();
@@ -53,10 +57,11 @@ public class EurderService {
                 .toList();
 
         Eurder eurder = new Eurder(customer.getId(), itemGroups, customer.getAddress());
-        Eurder savedEurder = eurderRepository.addEurder(eurder);
+        Eurder savedEurder = eurderRepository.save(eurder);
 
         return eurderMapper.toDto(savedEurder);
     }
+
 
     private ItemGroup createItemGroup(CreateItemGroupDto requestedGroup, LocalDate today) {
 
@@ -92,10 +97,12 @@ public class EurderService {
         );
     }
 
+    @Transactional(readOnly = true)
     public EurderReportDto getReportOfEurders(User user) {
         return eurderMapper.toReportDto(eurderRepository.findByCustomerId(user.getId()));
     }
 
+    @Transactional(readOnly = true)
     public EurderDto reorderExistingEurder(String id, User user) {
         Eurder originalEurder = eurderRepository.findById(id)
                 .orElseThrow(() ->
@@ -119,11 +126,17 @@ public class EurderService {
         return addEurder(new CreateEurderDto(requestedGroups), user);
     }
 
+    @Transactional(readOnly = true)
     public List<EurderShipmentDto> getAllEurdersShippingToday() {
-        return eurderRepository.findAllEurdersWithItemsShippingToday().stream()
-                .map(eurder -> new EurderShipmentDto(eurder.getId(),
+        return eurderRepository.findAll().stream()
+                .filter(Eurder::hasItemGroupShippingToday)
+                .map(eurder -> new EurderShipmentDto(
+                        eurder.getId(),
                         addressMapper.toDto(eurder.getShippingAddress()),
-                        itemGroupMapper.toDto(eurder.getAllItemGroupsThatShipToday())))
+                        itemGroupMapper.toDto(
+                                eurder.getAllItemGroupsThatShipToday()
+                        )
+                ))
                 .toList();
     }
 }
