@@ -29,6 +29,30 @@ public class Item {
     @Column(nullable = false)
     private Long version;
 
+    public void updateDetails(
+            String name,
+            String description,
+            BigDecimal price,
+            int amount
+    ) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name must not be blank");
+        }
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Description must not be blank");
+        }
+        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Price must be greater than zero");
+        }
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount must not be negative");
+        }
+
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.amount = amount;
+    }
 
     public Item(String name, String description, BigDecimal price, int amount, String id) {
         this.name = requireNonBlank(name, "name");

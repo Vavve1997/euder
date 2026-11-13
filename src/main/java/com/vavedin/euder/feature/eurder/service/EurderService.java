@@ -41,7 +41,8 @@ public class EurderService {
         this.addressMapper = addressMapper;
     }
 
-    @Transactional(readOnly = true)
+
+    @Transactional
     public EurderDto addEurder(CreateEurderDto createEurderDto, User customer) {
 
         List<CreateItemGroupDto> requestedGroups = createEurderDto.getItemGroupDtos();
@@ -102,7 +103,7 @@ public class EurderService {
         return eurderMapper.toReportDto(eurderRepository.findByCustomerId(user.getId()));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public EurderDto reorderExistingEurder(String id, User user) {
         Eurder originalEurder = eurderRepository.findById(id)
                 .orElseThrow(() ->

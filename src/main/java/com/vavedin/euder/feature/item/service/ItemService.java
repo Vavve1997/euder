@@ -8,6 +8,7 @@ import com.vavedin.euder.feature.item.domain.Item;
 import com.vavedin.euder.feature.item.domain.ItemRepository;
 import com.vavedin.euder.feature.item.domain.ItemRepositoryOutOfUse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ItemService {
@@ -25,11 +26,19 @@ public class ItemService {
         return itemMapper.toDto(itemRepository.save(itemMapper.toEntity(createItemDto)));
     }
 
-    public ItemDto updateItem(String id, UpdateItemDto updateItemDto) {
-        itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("No item for Id " + id));
+    @Transactional
+    public ItemDto updateItem(String id, UpdateItemDto dto) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() ->
+                        new ItemNotFoundException("Item not found for id " + id));
 
-        Item updatedItem = new Item(updateItemDto.getName(), updateItemDto.getDescription(), updateItemDto.getPrice(), updateItemDto.getAmount(), id);
-        return itemMapper.toDto(itemRepository.save(updatedItem));
+        item.updateDetails(
+                dto.getName(),
+                dto.getDescription(),
+                dto.getPrice(),
+                dto.getAmount()
+        );
 
+        return itemMapper.toDto(item);
     }
 }
